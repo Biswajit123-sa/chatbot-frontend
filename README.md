@@ -14,3 +14,12 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Deployment notes 🔧
+
+- Set the backend URL in an environment variable **starting with** `VITE_` (for example `VITE_API_URL=https://your-backend.example.com`) so the frontend uses the deployed backend instead of `http://localhost:8000`.
+- Example (Linux / macOS): `VITE_API_URL=https://your-backend.example.com npm run build`.
+- On Windows PowerShell: `$env:VITE_API_URL = 'https://your-backend.example.com'; npm run build`.
+- After building (`npm run build`) serve the `dist/` folder on any static host (Netlify, Vercel, Render static site, GitHub Pages, etc.).
+
+Note: During development, the app will default to `http://localhost:8000` if `VITE_API_URL` is not set.

@@ -7,6 +7,8 @@ const App = () => {
   const [messages, setMessages] = useState([]) // {role:'user'|'bot', text}
   const [loading, setLoading] = useState(false)
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!question.trim()) return
@@ -17,7 +19,7 @@ const App = () => {
     setLoading(true)
 // https://chatbot-backend-s75c.onrender.com
     try {
-      const res = await axios.post('https://chatbot-backend-s75c.onrender.com/ask', { question: userMessage.text })
+      const res = await axios.post(`${API_URL}/ask`, { question: userMessage.text })
       const body = res.data
       if (body && body._status) {
         const botMessage = { role: 'bot', text: body._finalData || 'No response' }
@@ -27,8 +29,10 @@ const App = () => {
         setMessages((m) => [...m, { role: 'bot', text: `Error: ${errMsg}` }])
       }
     } catch (err) {
-      console.error(err)
-      setMessages((m) => [...m, { role: 'bot', text: 'Server error. Please check the backend.' }])
+      console.error('request error:', err)
+      // try to provide a helpful error message (server response if available)
+      const serverMsg = err?.response?.data || err?.message || 'Unknown error'
+      setMessages((m) => [...m, { role: 'bot', text: `Server error: ${JSON.stringify(serverMsg)}` }])
     } finally {
       setLoading(false)
     }
