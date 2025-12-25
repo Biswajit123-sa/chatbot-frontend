@@ -15,9 +15,9 @@ const App = () => {
     setMessages((m) => [...m, userMessage])
     setQuestion('')
     setLoading(true)
-
+// https://chatbot-backend-s75c.onrender.com
     try {
-      const res = await axios.post('http://localhost:8000/ask', { question: userMessage.text })
+      const res = await axios.post('https://chatbot-backend-s75c.onrender.com/ask', { question: userMessage.text })
       const body = res.data
       if (body && body._status) {
         const botMessage = { role: 'bot', text: body._finalData || 'No response' }
